@@ -1,6 +1,9 @@
 import 'package:automated_course_plan_generator/Screens/admin/staffadd.dart';
+import 'package:automated_course_plan_generator/bloc/staff/staff_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
+import 'package:automated_course_plan_generator/model/staff_create_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 
@@ -27,6 +30,12 @@ class _StaffViewState extends State<StaffView> {
   late int stfno;
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<StaffCubit>(context).getStaff();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Background(
         child: Column(
@@ -45,11 +54,28 @@ class _StaffViewState extends State<StaffView> {
                 size: 27,
               )),
         ),
-        Expanded(
-            child: ListView.builder(
-          itemCount: staffName.length,
-          itemBuilder: (context, position) {
-            return stfBox(position);
+        Expanded(child: BlocBuilder<StaffCubit, StaffState>(
+          builder: (context, state) {
+            if (state is StaffLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is GetStaffLoaded) {
+              List<StaffCreateModel> staff = state.staffList;
+              print(staff);
+              print(staff.length);
+              return ListView.builder(
+                itemCount: staff.length,
+                itemBuilder: (context, position) {
+                  return stfBox(staff[position].username);
+                },
+              );
+            }
+            if (state is Stafffailed) {
+              print(state.error);
+            }
+            return Container();
           },
         )),
         Padding(
@@ -71,7 +97,7 @@ class _StaffViewState extends State<StaffView> {
     ));
   }
 
-  Widget stfBox(clno) {
+  Widget stfBox(String staff) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       child: Column(
@@ -92,7 +118,7 @@ class _StaffViewState extends State<StaffView> {
                   ),
                   Expanded(
                     child: Text(
-                      staffName[clno],
+                      staff,
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 22,

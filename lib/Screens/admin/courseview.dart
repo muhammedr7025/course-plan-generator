@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:automated_course_plan_generator/Screens/admin/courseadd.dart';
+import 'package:automated_course_plan_generator/bloc/course/course_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 
 class CourseView extends StatefulWidget {
-  CourseView({Key? key}) : super(key: key);
+  const CourseView({Key? key}) : super(key: key);
 
   @override
   State<CourseView> createState() => _CourseViewState();
@@ -23,6 +27,11 @@ class _CourseViewState extends State<CourseView> {
   ];
 
   late int courseno;
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CourseCubit>(context).getCourses();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,19 +52,35 @@ class _CourseViewState extends State<CourseView> {
                 size: 27,
               )),
         ),
-        Expanded(
-            child: ListView.builder(
-          itemCount: courseName.length,
-          itemBuilder: (context, position) {
-            return courseBox(position);
+        Expanded(child: BlocBuilder<CourseCubit, CourseState>(
+          builder: (context, state) {
+            if (state is CourseLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is CourseLoaded) {
+              final course = state.courseModel;
+              log(course.toString());
+              return ListView.builder(
+                itemCount: course.length,
+                itemBuilder: (context, position) {
+                  return courseBox(course[position].name);
+                },
+              );
+            }
+            if (state is CourseFailed) {
+              log(state.error);
+            }
+            return Container();
           },
         )),
         Padding(
           padding: const EdgeInsets.all(25.0),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CourseAdd()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const CourseAdd()));
             },
             style:
                 ElevatedButton.styleFrom(primary: kPrimaryColor, elevation: 0),
@@ -69,7 +94,7 @@ class _CourseViewState extends State<CourseView> {
     ));
   }
 
-  Widget courseBox(clno) {
+  Widget courseBox(String name) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       child: Column(
@@ -90,7 +115,7 @@ class _CourseViewState extends State<CourseView> {
                   ),
                   Expanded(
                     child: Text(
-                      courseName[clno],
+                      name,
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 22,

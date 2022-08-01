@@ -10,6 +10,18 @@ class CourseAdd extends StatefulWidget {
 }
 
 class _CourseAddState extends State<CourseAdd> {
+  final nameController = TextEditingController();
+  List<TextEditingController> _controllers = [];
+  List<TextField> _fields = [];
+
+  @override
+  void dispose() {
+    for (final controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -29,8 +41,48 @@ class _CourseAddState extends State<CourseAdd> {
                 size: 27,
               )),
         ),
-        const Expanded(
-          child: SizedBox(),
+        Expanded(
+          child: Column(
+            children: [
+              TextFormField(
+                controller: nameController,
+                textInputAction: TextInputAction.next,
+                cursorColor: kPrimaryColor,
+                obscureText: true,
+                onSaved: (email) {},
+                decoration: const InputDecoration(
+                  hintText: "Course Name",
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.all(defaultPadding),
+                    child: Icon(Icons.person),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  const Text('Modules'),
+                  IconButton(
+                    onPressed: () {
+                      _addTile();
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
+              ListView.builder(
+                itemCount: _fields.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.all(5),
+                    child: _fields[index],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(25.0),
@@ -46,5 +98,26 @@ class _CourseAddState extends State<CourseAdd> {
         ),
       ],
     ));
+  }
+
+  Widget _addTile() {
+    return ListTile(
+      title: const Icon(Icons.add),
+      onTap: () {
+        final controller = TextEditingController();
+        final field = TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: "name${_controllers.length + 1}",
+          ),
+        );
+
+        setState(() {
+          _controllers.add(controller);
+          _fields.add(field);
+        });
+      },
+    );
   }
 }

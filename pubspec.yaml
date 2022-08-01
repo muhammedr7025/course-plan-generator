@@ -30,11 +30,14 @@ dependencies:
   animated_custom_dropdown: ^1.2.2
   awesome_dropdown: ^0.0.4
   cupertino_icons: ^1.0.5
+  dio: ^4.0.6
   dropdown_search: ^5.0.2
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.0.1
   flutter_svg: ^1.1.0
   google_nav_bar: ^5.0.6
+  http: ^0.13.4
   shared_preferences: ^2.0.15
 
 dev_dependencies:
