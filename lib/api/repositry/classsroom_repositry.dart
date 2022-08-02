@@ -2,13 +2,20 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:automated_course_plan_generator/constant/constants.dart';
+import 'package:automated_course_plan_generator/main.dart';
 import 'package:automated_course_plan_generator/model/classroom_model.dart';
 import 'package:http/http.dart' as http;
 
 class ClassroomRepositry {
   Future<List<ClassroomModel>> getClassroom() async {
+    final token = prefs.getString('token');
     http.Response response = await http.get(
       Uri.parse(apiAddress + classroom),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
     );
     log(response.statusCode.toString());
     try {
