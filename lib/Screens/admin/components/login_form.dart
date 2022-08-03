@@ -19,6 +19,7 @@ class LoginForm extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('You are successfully added a staff')));
           Navigator.of(context).pop();
+          BlocProvider.of<StaffCubit>(context).getStaff();
         }
       },
       child: Form(

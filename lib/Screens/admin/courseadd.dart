@@ -76,7 +76,7 @@ class _CourseAddState extends State<CourseAdd> {
                 itemCount: _fields.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.all(5),
+                    margin: const EdgeInsets.all(5),
                     child: _fields[index],
                   );
                 },

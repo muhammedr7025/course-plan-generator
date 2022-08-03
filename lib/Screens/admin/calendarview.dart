@@ -1,6 +1,8 @@
 import 'package:automated_course_plan_generator/Screens/admin/calendaradd.dart';
+import 'package:automated_course_plan_generator/bloc/classroom/classroom_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 
@@ -19,6 +21,11 @@ class _CalendarViewState extends State<CalendarView> {
   ];
 
   late int semno;
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ClassroomCubit>(context).getClassrooms();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +46,24 @@ class _CalendarViewState extends State<CalendarView> {
                 size: 27,
               )),
         ),
-        Expanded(
-            child: ListView.builder(
-          itemCount: semName.length,
-          itemBuilder: (context, position) {
-            return semBox(position);
+        Expanded(child: BlocBuilder<ClassroomCubit, ClassroomState>(
+          builder: (context, state) {
+            if (state is ClassroomLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is ClassroomLoaded) {
+              var courseList = state.classroomList;
+              return ListView.builder(
+                itemCount: courseList.length,
+                itemBuilder: (context, position) {
+                  return semBox(
+                      courseList[position].name, courseList[position].url);
+                },
+              );
+            }
+            return Container();
           },
         )),
         Padding(
@@ -65,7 +85,7 @@ class _CalendarViewState extends State<CalendarView> {
     ));
   }
 
-  Widget semBox(clno) {
+  Widget semBox(String name, String url) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       child: Column(
@@ -86,14 +106,55 @@ class _CalendarViewState extends State<CalendarView> {
                   ),
                   Expanded(
                     child: Text(
-                      semName[clno],
+                      name,
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 22,
                           fontWeight: FontWeight.w400),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('Delete Semester'),
+                                  actions: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 100,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          BlocProvider.of<ClassroomCubit>(
+                                                  context)
+                                              .deleteClassrooms(url: url);
+
+                                          Navigator.of(context).pop();
+                                          BlocProvider.of<ClassroomCubit>(
+                                                  context)
+                                              .getClassrooms();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: kPrimaryColor,
+                                            elevation: 0),
+                                        child: const Text(
+                                          "Confirm",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  content:
+                                      const Text('Please Confirm Your action'),
+                                ));
+                      },
+                      icon: const Icon(Icons.delete)),
                 ],
               )),
         ],

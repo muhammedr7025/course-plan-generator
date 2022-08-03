@@ -1,42 +1,40 @@
+// To parse this JSON data, do
+//
+//     final teachingModel = teachingModelFromJson(jsonString);
+
 import 'dart:convert';
 
-List<TeachingModel> teachingModelFromJson(String str) =>
-    List<TeachingModel>.from(
-        json.decode(str).map((x) => TeachingModel.fromJson(x)));
+TeachingModel teachingModelFromJson(String str) =>
+    TeachingModel.fromJson(json.decode(str));
 
-String teachingModelToJson(List<TeachingModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String teachingModelToJson(TeachingModel data) => json.encode(data.toJson());
 
 class TeachingModel {
   TeachingModel({
-    required this.url,
-    required this.teacher,
-    required this.course,
     required this.classroom,
+    required this.course,
     required this.periods,
+    required this.teacher,
   });
 
-  String url;
-  String teacher;
-  String course;
   String classroom;
+  String course;
   Map<String, List<int>> periods;
+  String teacher;
 
   factory TeachingModel.fromJson(Map<String, dynamic> json) => TeachingModel(
-        url: json["url"],
-        teacher: json["teacher"],
-        course: json["course"],
         classroom: json["classroom"],
+        course: json["course"],
         periods: Map.from(json["periods"]).map((k, v) =>
             MapEntry<String, List<int>>(k, List<int>.from(v.map((x) => x)))),
+        teacher: json["teacher"],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url,
-        "teacher": teacher,
-        "course": course,
         "classroom": classroom,
+        "course": course,
         "periods": Map.from(periods).map((k, v) =>
             MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
+        "teacher": teacher,
       };
 }

@@ -20,3 +20,5 @@ class CourseFailed extends CourseState {
     required this.error,
   });
 }
+
+class CourseDeleteSuccess extends CourseState {}

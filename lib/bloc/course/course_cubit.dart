@@ -18,4 +18,15 @@ class CourseCubit extends Cubit<CourseState> {
       emit(CourseFailed(error: e.toString()));
     }
   }
+
+  deleteCourses({required String url}) async {
+    emit(CourseInitial());
+    emit(CourseLoading());
+    try {
+      final response = await courseRepo.deleteCourse(url: url);
+      emit(CourseDeleteSuccess());
+    } catch (e) {
+      emit(CourseFailed(error: e.toString()));
+    }
+  }
 }

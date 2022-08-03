@@ -65,7 +65,7 @@ class _CourseViewState extends State<CourseView> {
               return ListView.builder(
                 itemCount: course.length,
                 itemBuilder: (context, position) {
-                  return courseBox(course[position].name);
+                  return courseBox(course[position].name, course[position].url);
                 },
               );
             }
@@ -94,7 +94,7 @@ class _CourseViewState extends State<CourseView> {
     ));
   }
 
-  Widget courseBox(String name) {
+  Widget courseBox(String name, String url) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       child: Column(
@@ -122,7 +122,45 @@ class _CourseViewState extends State<CourseView> {
                           fontWeight: FontWeight.w400),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('Delete Course'),
+                                  actions: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 100,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          BlocProvider.of<CourseCubit>(context)
+                                              .deleteCourses(url: url);
+                                          Navigator.of(context).pop();
+                                          BlocProvider.of<CourseCubit>(context)
+                                              .getCourses();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: kPrimaryColor,
+                                            elevation: 0),
+                                        child: const Text(
+                                          "Confirm",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  content:
+                                      const Text('Please Confirm Your action'),
+                                ));
+                      },
+                      icon: const Icon(Icons.delete)),
                 ],
               )),
         ],

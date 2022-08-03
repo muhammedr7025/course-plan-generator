@@ -12,12 +12,12 @@ class LoginRepositry {
       "username": username,
       "password": password,
     };
-    final request = jsonEncode(requestPayload);
+    // final request = jsonEncode(requestPayload);
     print(Uri.parse(apiAddress + loginPath));
     http.Response response = await http.post(
       Uri.parse(apiAddress + loginPath),
-      body: request,
-      headers: {'Content-Type': 'application/json'},
+      body: requestPayload,
+      // headers: {'Content-Type': 'application/json'},
     );
     try {
       if (response.statusCode == 200) {

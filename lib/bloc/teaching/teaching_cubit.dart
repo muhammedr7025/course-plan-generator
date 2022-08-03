@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:automated_course_plan_generator/api/repositry/teaching_repositry.dart';
 import 'package:automated_course_plan_generator/model/teaching_model.dart';
 import 'package:bloc/bloc.dart';
@@ -13,9 +15,22 @@ class TeachingCubit extends Cubit<TeachingState> {
     emit(TeachingInitial());
     emit(TeachingLoading());
     try {
-      final response = await _teachingRepo.getClassroom();
+      final response = await _teachingRepo.getteaching();
       teachingList = response;
       emit(TeachingLoaded(teachingList: teachingList));
+    } catch (e) {
+      emit(TeachingError(name: e.toString()));
+    }
+  }
+
+  createTeaching({required TeachingModel teachingModel}) async {
+    emit(TeachingInitial());
+    emit(TeachingLoading());
+    try {
+      final response =
+          await _teachingRepo.createClassroom(teachingMap: teachingModel);
+      log(response);
+      emit(TeachingCreatedLoaded());
     } catch (e) {
       emit(TeachingError(name: e.toString()));
     }

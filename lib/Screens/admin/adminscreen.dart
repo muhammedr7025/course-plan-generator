@@ -277,57 +277,57 @@ class _AdminScreenState extends State<AdminScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Material(
-                    color: kPrimaryLightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    child: InkWell(
-                      splashColor: kPrimaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(30)),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ChangePassword()));
-                      },
-                      child: Container(
-                        height: 50,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Icon(
-                                Icons.security,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                "Change Password",
-                                style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: Icon(Icons.navigate_next),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // Material(
+                  //   color: kPrimaryLightColor,
+                  //   borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  //   child: InkWell(
+                  //     splashColor: kPrimaryColor,
+                  //     borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  //     onTap: () {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => const ChangePassword()));
+                  //     },
+                  //     child: Container(
+                  //       height: 50,
+                  //       padding: const EdgeInsets.all(10),
+                  //       decoration: const BoxDecoration(
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(30))),
+                  //       child: Row(
+                  //         children: [
+                  //           SizedBox(
+                  //             height: 30,
+                  //             width: 30,
+                  //             child: Icon(
+                  //               Icons.security,
+                  //               color: Colors.grey[800],
+                  //             ),
+                  //           ),
+                  //           const SizedBox(
+                  //             width: 10,
+                  //           ),
+                  //           Expanded(
+                  //             child: Text(
+                  //               "Change Password",
+                  //               style: TextStyle(
+                  //                   color: Colors.grey[800],
+                  //                   fontSize: 18,
+                  //                   fontWeight: FontWeight.w400),
+                  //             ),
+                  //           ),
+                  //           const SizedBox(
+                  //             width: 30,
+                  //             height: 30,
+                  //             child: Icon(Icons.navigate_next),
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
                   Material(
                     color: kPrimaryLightColor,
                     borderRadius: const BorderRadius.all(Radius.circular(30)),

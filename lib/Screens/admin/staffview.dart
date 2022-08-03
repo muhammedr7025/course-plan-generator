@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:automated_course_plan_generator/Screens/admin/staffadd.dart';
 import 'package:automated_course_plan_generator/bloc/staff/staff_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
@@ -54,7 +56,13 @@ class _StaffViewState extends State<StaffView> {
                 size: 27,
               )),
         ),
-        Expanded(child: BlocBuilder<StaffCubit, StaffState>(
+        Expanded(
+            child: BlocConsumer<StaffCubit, StaffState>(
+          listener: (context, state) {
+            if (state is StaffLoaded) {
+              BlocProvider.of<StaffCubit>(context).getStaff();
+            }
+          },
           builder: (context, state) {
             if (state is StaffLoading) {
               return const Center(
@@ -63,17 +71,16 @@ class _StaffViewState extends State<StaffView> {
             }
             if (state is GetStaffLoaded) {
               List<StaffCreateModel> staff = state.staffList;
-              print(staff);
-              print(staff.length);
+
               return ListView.builder(
                 itemCount: staff.length,
                 itemBuilder: (context, position) {
-                  return stfBox(staff[position].username);
+                  return stfBox(staff[position].username, staff[position].url);
                 },
               );
             }
             if (state is Stafffailed) {
-              print(state.error);
+              log(state.error);
             }
             return Container();
           },
@@ -97,7 +104,7 @@ class _StaffViewState extends State<StaffView> {
     ));
   }
 
-  Widget stfBox(String staff) {
+  Widget stfBox(String staff, String url) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       child: Column(
@@ -125,7 +132,43 @@ class _StaffViewState extends State<StaffView> {
                           fontWeight: FontWeight.w400),
                     ),
                   ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('Delete User'),
+                                  actions: [
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 100,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          BlocProvider.of<StaffCubit>(context)
+                                              .deleteStaff(url: url);
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            primary: kPrimaryColor,
+                                            elevation: 0),
+                                        child: const Text(
+                                          "Confirm",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  content:
+                                      const Text('Please Confirm Your action'),
+                                ));
+                      },
+                      icon: const Icon(Icons.delete)),
                 ],
               )),
         ],

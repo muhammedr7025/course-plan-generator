@@ -1,5 +1,8 @@
 import 'package:automated_course_plan_generator/Screens/btmnav.dart';
+import 'package:automated_course_plan_generator/Screens/staff/staffhomescreen.dart';
+import 'package:automated_course_plan_generator/bloc/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +21,29 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        print(state);
+        if (state is AuthSuccess) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const StaffHomeScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
+        if (state is Authfailed) {
+          // print(state.)
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Invalid username or password',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+            margin: EdgeInsets.all(10),
+          ));
+        }
+      },
       child: Column(
         children: [
           TextFormField(
@@ -56,7 +81,10 @@ class LoginForm extends StatelessWidget {
             tag: "login_btn",
             child: ElevatedButton(
               onPressed: () {
-                checkStaffLogin(context);
+                BlocProvider.of<AuthCubit>(context).login(
+                  username: _usernameController.text,
+                  password: _passwordController.text,
+                );
               },
               child: Text(
                 "Login".toUpperCase(),

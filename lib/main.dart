@@ -1,6 +1,8 @@
 import 'package:automated_course_plan_generator/bloc/auth/auth_cubit.dart';
+import 'package:automated_course_plan_generator/bloc/classroom/classroom_cubit.dart';
 import 'package:automated_course_plan_generator/bloc/course/course_cubit.dart';
 import 'package:automated_course_plan_generator/bloc/staff/staff_cubit.dart';
+import 'package:automated_course_plan_generator/bloc/teaching/teaching_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +34,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StaffCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ClassroomCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TeachingCubit(),
         ),
       ],
       child: MaterialApp(

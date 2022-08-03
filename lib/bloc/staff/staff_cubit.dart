@@ -31,4 +31,15 @@ class StaffCubit extends Cubit<StaffState> {
       emit(Stafffailed(error: e.toString()));
     }
   }
+
+  deleteStaff({required String url}) async {
+    emit(StaffInitial());
+    emit(StaffLoading());
+    try {
+      final response = await _repo.deleteStaff(url: url);
+      emit(StaffLoaded());
+    } catch (e) {
+      emit(Stafffailed(error: e.toString()));
+    }
+  }
 }

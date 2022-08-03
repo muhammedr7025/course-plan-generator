@@ -20,3 +20,5 @@ class TeachingError extends TeachingState {
     required this.name,
   });
 }
+
+class TeachingCreatedLoaded extends TeachingState {}
