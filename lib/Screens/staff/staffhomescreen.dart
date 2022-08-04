@@ -169,7 +169,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                           builder: (context) => TimeTable(
                                 classroomUrl: classroom.url,
                                 courseUrl: courseModel.url,
-                                teacherUrl: 'http://34.222.29.103/users/19/',
+                                teacherUrl: 'http://34.222.29.103/users/21/',
                               )));
                     }
                   },

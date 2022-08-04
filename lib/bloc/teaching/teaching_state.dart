@@ -8,7 +8,7 @@ class TeachingInitial extends TeachingState {}
 class TeachingLoading extends TeachingState {}
 
 class TeachingLoaded extends TeachingState {
-  final List<TeachingModel> teachingList;
+  final List<TeachingResponseModel> teachingList;
   TeachingLoaded({
     required this.teachingList,
   });

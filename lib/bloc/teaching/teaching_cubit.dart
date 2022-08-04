@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:automated_course_plan_generator/api/repositry/teaching_repositry.dart';
@@ -9,7 +10,7 @@ part 'teaching_state.dart';
 
 class TeachingCubit extends Cubit<TeachingState> {
   TeachingCubit() : super(TeachingInitial());
-  List<TeachingModel> teachingList = [];
+  List<TeachingResponseModel> teachingList = [];
   final _teachingRepo = TeachingRepositor();
   getTeaching() async {
     emit(TeachingInitial());
@@ -29,10 +30,12 @@ class TeachingCubit extends Cubit<TeachingState> {
     try {
       final response =
           await _teachingRepo.createClassroom(teachingMap: teachingModel);
-      log(response);
+      final res = TeachingModel.fromJson(json.decode(response.data));
+      log(res.toString());
       emit(TeachingCreatedLoaded());
     } catch (e) {
       emit(TeachingError(name: e.toString()));
+      throw Exception(e);
     }
   }
 }

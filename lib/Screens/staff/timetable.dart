@@ -29,8 +29,8 @@ class _TimeTableState extends State<TimeTable> {
   List<int> selectedIndex3 = [];
   List<int> selectedIndex4 = [];
   List<int> selectedIndex5 = [];
-  List<int> selectedIndex6 = [];
-  List<int> selectedIndex7 = [];
+  // List<int> selectedIndex6 = [];
+  // List<int> selectedIndex7 = [];
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -97,10 +97,11 @@ class _TimeTableState extends State<TimeTable> {
                         "2": selectedIndex3,
                         "3": selectedIndex4,
                         "4": selectedIndex5,
-                        "5": selectedIndex6,
-                        "6": selectedIndex7,
+                        // "5": selectedIndex6,
+                        // "6": selectedIndex7,
                       },
                       teacher: widget.teacherUrl);
+                  log(teachingModel.toJson().toString());
                   BlocProvider.of<TeachingCubit>(context)
                       .createTeaching(teachingModel: teachingModel);
                 },
@@ -118,25 +119,30 @@ class _TimeTableState extends State<TimeTable> {
         Expanded(
           child: Column(
             children: [
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  title("Prd/Day"),
-                  title("Mon"),
-                  title("Tue"),
-                  title("Wed"),
-                  title("Thur"),
-                  title("Fri")
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    title("Prd/Day"),
+                    title("1"),
+                    title("2"),
+                    title("3"),
+                    title("4"),
+                    title("5"),
+                    title("6"),
+                    title("7"),
+                  ],
+                ),
               ),
               Row(
                 children: [
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(flex: 1, child: title("1st")),
+                  Expanded(flex: 1, child: title("mon")),
                   Expanded(
                     flex: 6,
                     child: GridView.builder(
@@ -187,7 +193,7 @@ class _TimeTableState extends State<TimeTable> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(flex: 1, child: title("2st")),
+                  Expanded(flex: 1, child: title("tue")),
                   Expanded(
                     flex: 6,
                     child: GridView.builder(
@@ -241,8 +247,8 @@ class _TimeTableState extends State<TimeTable> {
                   height: 30,
                   width: 400,
                   child: const Center(
-                    child: Text('TEA BREAK'),
-                  ),
+                      // child: Text('TEA BREAK'),
+                      ),
                 ),
               ),
               Row(
@@ -250,7 +256,7 @@ class _TimeTableState extends State<TimeTable> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(flex: 1, child: title("3rd")),
+                  Expanded(flex: 1, child: title("wed")),
                   Expanded(
                     flex: 6,
                     child: GridView.builder(
@@ -301,7 +307,7 @@ class _TimeTableState extends State<TimeTable> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(flex: 1, child: title("4th")),
+                  Expanded(flex: 1, child: title("thu")),
                   Expanded(
                     flex: 6,
                     child: GridView.builder(
@@ -355,8 +361,8 @@ class _TimeTableState extends State<TimeTable> {
                   height: 30,
                   width: 400,
                   child: const Center(
-                    child: Text('LUNCH BREAK'),
-                  ),
+                      // child: Text('LUNCH BREAK'),
+                      ),
                 ),
               ),
               Row(
@@ -364,7 +370,7 @@ class _TimeTableState extends State<TimeTable> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Expanded(flex: 1, child: title("5th")),
+                  Expanded(flex: 1, child: title("fri")),
                   Expanded(
                     flex: 6,
                     child: GridView.builder(
@@ -418,120 +424,120 @@ class _TimeTableState extends State<TimeTable> {
                   )
                 ],
               ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(flex: 1, child: title("6th")),
-                  Expanded(
-                    flex: 6,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 1.0,
-                              mainAxisSpacing: 1.0),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(left: 5.0, top: 5.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (selectedIndex6.contains(index)) {
-                                selectedIndex6.remove(index);
+              //       Row(
+              //         children: [
+              //           const SizedBox(
+              //             width: 5,
+              //           ),
+              //           Expanded(flex: 1, child: title("6th")),
+              //           Expanded(
+              //             flex: 6,
+              //             child: GridView.builder(
+              //               shrinkWrap: true,
+              //               itemCount: 5,
+              //               scrollDirection: Axis.vertical,
+              //               padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              //               gridDelegate:
+              //                   const SliverGridDelegateWithFixedCrossAxisCount(
+              //                       crossAxisCount: 5,
+              //                       crossAxisSpacing: 1.0,
+              //                       mainAxisSpacing: 1.0),
+              //               itemBuilder: (context, index) => Padding(
+              //                 padding: const EdgeInsets.only(left: 5.0, top: 5.0),
+              //                 child: GestureDetector(
+              //                   onTap: () {
+              //                     setState(() {
+              //                       if (selectedIndex6.contains(index)) {
+              //                         selectedIndex6.remove(index);
 
-                                log('here in if loop');
-                              } else {
-                                selectedIndex6.add(index);
-                                log('here in else loop');
-                              }
-                            });
-                            print('6 => $selectedIndex6');
-                          },
-                          child: Container(
-                            width: 57,
-                            height: 57,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: selectedIndex6.contains(index)
-                                    ? Colors.amber[300]
-                                    : kPrimaryLightColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 10.0, top: 5.0, right: 15.0),
-                child: Container(
-                  color: Colors.green[300],
-                  height: 30,
-                  width: 400,
-                  child: const Center(
-                    child: Text('TEA BREAK'),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(flex: 1, child: title("7th")),
-                  Expanded(
-                    flex: 6,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 1.0,
-                              mainAxisSpacing: 1.0),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(left: 5.0, top: 5.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (selectedIndex7.contains(index)) {
-                                selectedIndex7.remove(index);
+              //                         log('here in if loop');
+              //                       } else {
+              //                         selectedIndex6.add(index);
+              //                         log('here in else loop');
+              //                       }
+              //                     });
+              //                     print('6 => $selectedIndex6');
+              //                   },
+              //                   child: Container(
+              //                     width: 57,
+              //                     height: 57,
+              //                     padding: const EdgeInsets.all(10),
+              //                     decoration: BoxDecoration(
+              //                         color: selectedIndex6.contains(index)
+              //                             ? Colors.amber[300]
+              //                             : kPrimaryLightColor,
+              //                         borderRadius:
+              //                             BorderRadius.all(Radius.circular(10))),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       Padding(
+              //         padding:
+              //             const EdgeInsets.only(left: 10.0, top: 5.0, right: 15.0),
+              //         child: Container(
+              //           color: Colors.green[300],
+              //           height: 30,
+              //           width: 400,
+              //           child: const Center(
+              //             child: Text('TEA BREAK'),
+              //           ),
+              //         ),
+              //       ),
+              //       Row(
+              //         children: [
+              //           const SizedBox(
+              //             width: 5,
+              //           ),
+              //           Expanded(flex: 1, child: title("7th")),
+              //           Expanded(
+              //             flex: 6,
+              //             child: GridView.builder(
+              //               shrinkWrap: true,
+              //               itemCount: 5,
+              //               scrollDirection: Axis.vertical,
+              //               padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              //               gridDelegate:
+              //                   const SliverGridDelegateWithFixedCrossAxisCount(
+              //                       crossAxisCount: 5,
+              //                       crossAxisSpacing: 1.0,
+              //                       mainAxisSpacing: 1.0),
+              //               itemBuilder: (context, index) => Padding(
+              //                 padding: const EdgeInsets.only(left: 5.0, top: 5.0),
+              //                 child: GestureDetector(
+              //                   onTap: () {
+              //                     setState(() {
+              //                       if (selectedIndex7.contains(index)) {
+              //                         selectedIndex7.remove(index);
 
-                                log('here in if loop');
-                              } else {
-                                selectedIndex7.add(index);
-                                log('here in else loop');
-                              }
-                            });
-                            print('6 => $selectedIndex7');
-                          },
-                          child: Container(
-                            width: 57,
-                            height: 57,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: selectedIndex7.contains(index)
-                                    ? Colors.amber[300]
-                                    : kPrimaryLightColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              //                         log('here in if loop');
+              //                       } else {
+              //                         selectedIndex7.add(index);
+              //                         log('here in else loop');
+              //                       }
+              //                     });
+              //                     print('6 => $selectedIndex7');
+              //                   },
+              //                   child: Container(
+              //                     width: 57,
+              //                     height: 57,
+              //                     padding: const EdgeInsets.all(10),
+              //                     decoration: BoxDecoration(
+              //                         color: selectedIndex7.contains(index)
+              //                             ? Colors.amber[300]
+              //                             : kPrimaryLightColor,
+              //                         borderRadius:
+              //                             BorderRadius.all(Radius.circular(10))),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
             ],
           ),
         ),

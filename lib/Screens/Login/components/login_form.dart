@@ -27,7 +27,7 @@ class LoginForm extends StatelessWidget {
         if (state is AuthSuccess) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const StaffHomeScreen()),
+            MaterialPageRoute(builder: (context) => const BtmNav()),
             (Route<dynamic> route) => false,
           );
         }
