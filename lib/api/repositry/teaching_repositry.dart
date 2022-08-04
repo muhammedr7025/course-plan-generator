@@ -82,4 +82,24 @@ class TeachingRepositor {
       throw Exception(e);
     }
   }
+
+  deleteteaching({required String url}) async {
+    final token = prefs.getString('token');
+    http.Response response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Connection': 'keep-alive',
+        'Authorization': 'Token $token',
+      },
+    );
+    try {
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        log(response.statusCode.toString());
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

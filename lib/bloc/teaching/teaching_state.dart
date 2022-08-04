@@ -22,3 +22,5 @@ class TeachingError extends TeachingState {
 }
 
 class TeachingCreatedLoaded extends TeachingState {}
+
+class TeachingDeleteLoaded extends TeachingState {}

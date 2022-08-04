@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:automated_course_plan_generator/bloc/teaching/teaching_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
 import 'package:automated_course_plan_generator/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SavedClass extends StatefulWidget {
   const SavedClass({Key? key}) : super(key: key);
@@ -108,11 +111,47 @@ class _SavedClassState extends State<SavedClass> {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.visibility)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                    onPressed: () => _viewFile(url),
+                    icon: const Icon(Icons.visibility)),
+                BlocListener<TeachingCubit, TeachingState>(
+                  listener: (context, state) {
+                    if (state is TeachingDeleteLoaded) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Suucessfully deleted')));
+                      BlocProvider.of<TeachingCubit>(context).getTeaching();
+                    }
+                    if (state is TeachingDeleteLoaded) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Something went wrong please try again')));
+                      BlocProvider.of<TeachingCubit>(context).getTeaching();
+                    }
+                  },
+                  child: IconButton(
+                      onPressed: () {
+                        BlocProvider.of<TeachingCubit>(context)
+                            .deleteCourses(url: url);
+                        BlocProvider.of<TeachingCubit>(context).getTeaching();
+                      },
+                      icon: const Icon(Icons.delete)),
+                ),
               ],
             )),
       ],
     );
+  }
+
+  void _viewFile(String url) async {
+    String completeUrl = '${url}course_plan_pdf';
+
+    try {
+      print(completeUrl);
+      await launch(
+        completeUrl,
+      );
+    } catch (err) {
+      print(err);
+      debugPrint('Something went wrong');
+    }
   }
 }

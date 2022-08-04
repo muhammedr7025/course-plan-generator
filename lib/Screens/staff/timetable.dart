@@ -107,11 +107,14 @@ class _TimeTableState extends State<TimeTable> {
                   Response response = await Dio().post(apiAddress + teaching,
                       data: {
                         "teacher": "http://34.222.29.103/users/12/",
-                        "course": "http://34.222.29.103/courses/CST304/",
-                        "classroom": "http://34.222.29.103/classroom/s6/",
+                        "course": widget.courseUrl,
+                        "classroom": widget.classroomUrl,
                         "periods": {
-                          "0": [0, 1],
-                          "4": [2, 3]
+                          "0": selectedIndex1,
+                          "1": selectedIndex2,
+                          "2": selectedIndex3,
+                          "3": selectedIndex4,
+                          "4": selectedIndex5,
                         }
                       },
                       options: Options(

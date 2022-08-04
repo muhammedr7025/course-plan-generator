@@ -29,7 +29,7 @@ class TeachingCubit extends Cubit<TeachingState> {
     }
   }
 
-  createTeaching() async {
+  createTeaching({required String url}) async {
     emit(TeachingInitial());
     emit(TeachingLoading());
     try {
@@ -40,6 +40,17 @@ class TeachingCubit extends Cubit<TeachingState> {
     } catch (e) {
       emit(TeachingError(name: e.toString()));
       throw Exception(e);
+    }
+  }
+
+  deleteCourses({required String url}) async {
+    emit(TeachingInitial());
+    emit(TeachingLoading());
+    try {
+      final response = await _teachingRepo.deleteteaching(url: url);
+      emit(TeachingDeleteLoaded());
+    } catch (e) {
+      emit(TeachingError(name: e.toString()));
     }
   }
 }
