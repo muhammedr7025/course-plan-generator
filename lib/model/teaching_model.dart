@@ -1,81 +1,42 @@
-// To parse this JSON data, do
-//
-//     final teachingModel = teachingModelFromJson(jsonString);
-
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+List<TeachingModel> teachingModelFromJson(String str) =>
+    List<TeachingModel>.from(
+        json.decode(str).map((x) => TeachingModel.fromJson(x)));
+
+String teachingModelToJson(List<TeachingModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TeachingModel {
-  String classroom;
-  String course;
-  Map<String, List<int>> periods;
-  String teacher;
   TeachingModel({
-    required this.classroom,
-    required this.course,
-    required this.periods,
+    required this.url,
     required this.teacher,
+    required this.course,
+    required this.classroom,
+    required this.periods,
   });
 
-  TeachingModel copyWith({
-    String? classroom,
-    String? course,
-    Map<String, List<int>>? periods,
-    String? teacher,
-  }) {
-    return TeachingModel(
-      classroom: classroom ?? this.classroom,
-      course: course ?? this.course,
-      periods: periods ?? this.periods,
-      teacher: teacher ?? this.teacher,
-    );
-  }
+  String url;
+  String teacher;
+  String course;
+  String classroom;
+  Map<String, List<int>> periods;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'classroom': classroom,
-      'course': course,
-      'periods': periods,
-      'teacher': teacher,
-    };
-  }
+  factory TeachingModel.fromJson(Map<String, dynamic> json) => TeachingModel(
+        url: json["url"],
+        teacher: json["teacher"],
+        course: json["course"],
+        classroom: json["classroom"],
+        periods: Map.from(json["periods"]).map((k, v) =>
+            MapEntry<String, List<int>>(k, List<int>.from(v.map((x) => x)))),
+      );
 
-  factory TeachingModel.fromMap(Map<String, dynamic> map) {
-    return TeachingModel(
-      classroom: map['classroom'] ?? '',
-      course: map['course'] ?? '',
-      periods: Map<String, List<int>>.from(map['periods']),
-      teacher: map['teacher'] ?? '',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory TeachingModel.fromJson(String source) =>
-      TeachingModel.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'TeachingModel(classroom: $classroom, course: $course, periods: $periods, teacher: $teacher)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is TeachingModel &&
-        other.classroom == classroom &&
-        other.course == course &&
-        mapEquals(other.periods, periods) &&
-        other.teacher == teacher;
-  }
-
-  @override
-  int get hashCode {
-    return classroom.hashCode ^
-        course.hashCode ^
-        periods.hashCode ^
-        teacher.hashCode;
-  }
+  Map<String, dynamic> toJson() => {
+        "url": url,
+        "teacher": teacher,
+        "course": course,
+        "classroom": classroom,
+        "periods": Map.from(periods).map((k, v) =>
+            MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
+      };
 }

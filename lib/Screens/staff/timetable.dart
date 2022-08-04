@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:automated_course_plan_generator/bloc/teaching/teaching_cubit.dart';
+import 'package:automated_course_plan_generator/constant/constants.dart';
+import 'package:automated_course_plan_generator/main.dart';
 import 'package:automated_course_plan_generator/model/teaching_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,7 +76,7 @@ class _TimeTableState extends State<TimeTable> {
                 }
               },
               child: OutlinedButton(
-                onPressed: () {
+                onPressed: () async {
                   // final Map<String, dynamic> map = {
                   //   "classroom": widget.classroomUrl,
                   //   "course": widget.courseUrl,
@@ -87,23 +90,41 @@ class _TimeTableState extends State<TimeTable> {
                   //     "6": selectedIndex7,
                   //   },
                   //   "teacher": widget.teacherUrl
-                  // };
-                  final TeachingModel teachingModel = TeachingModel(
-                      classroom: widget.classroomUrl,
-                      course: widget.courseUrl,
-                      periods: {
-                        "0": selectedIndex1,
-                        "1": selectedIndex2,
-                        "2": selectedIndex3,
-                        "3": selectedIndex4,
-                        "4": selectedIndex5,
-                        // "5": selectedIndex6,
-                        // "6": selectedIndex7,
+                  // // };
+                  // final TeachingModel teachingModel = TeachingModel(
+                  //     classroom: widget.classroomUrl,
+                  //     course: widget.courseUrl,
+                  //     periods: {
+                  //       "0": selectedIndex1,
+                  //       "1": selectedIndex2,
+                  //       "2": selectedIndex3,
+                  //       "3": selectedIndex4,
+                  //       "4": selectedIndex5,
+                  //     },
+                  //     teacher: widget.teacherUrl);
+
+                  // BlocProvider.of<TeachingCubit>(context).createTeaching();
+                  Response response = await Dio().post(apiAddress + teaching,
+                      data: {
+                        "teacher": "http://34.222.29.103/users/12/",
+                        "course": "http://34.222.29.103/courses/CST304/",
+                        "classroom": "http://34.222.29.103/classroom/s6/",
+                        "periods": {
+                          "0": [0, 1],
+                          "4": [2, 3]
+                        }
                       },
-                      teacher: widget.teacherUrl);
-                  log(teachingModel.toJson().toString());
-                  BlocProvider.of<TeachingCubit>(context)
-                      .createTeaching(teachingModel: teachingModel);
+                      options: Options(
+                        headers: {
+                          'Authorization': 'Token ${prefs.getString('token')}',
+                        },
+                      ));
+                  if (response.statusCode == 201) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Course Plan Genrated SuccessFully Please check in saved tab')));
+                    Navigator.of(context).pop();
+                  }
                 },
                 child: const Text(
                   'Create',

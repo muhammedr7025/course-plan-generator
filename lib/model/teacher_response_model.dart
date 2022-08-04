@@ -1,14 +1,15 @@
 // To parse this JSON data, do
 //
-//     final teachingModel = teachingModelFromJson(jsonString);
+//     final teachingResponseModel = teachingResponseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TeachingResponseModel teachingModelFromJson(String str) =>
-    TeachingResponseModel.fromJson(json.decode(str));
+List<TeachingResponseModel> teachingResponseModelFromJson(String str) =>
+    List<TeachingResponseModel>.from(
+        json.decode(str).map((x) => TeachingResponseModel.fromJson(x)));
 
-String teachingModelToJson(TeachingResponseModel data) =>
-    json.encode(data.toJson());
+String teachingResponseModelToJson(List<TeachingResponseModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TeachingResponseModel {
   TeachingResponseModel({
@@ -23,7 +24,7 @@ class TeachingResponseModel {
   String teacher;
   String course;
   String classroom;
-  Map<String, List<int>> periods;
+  dynamic periods;
 
   factory TeachingResponseModel.fromJson(Map<String, dynamic> json) =>
       TeachingResponseModel(
@@ -31,8 +32,7 @@ class TeachingResponseModel {
         teacher: json["teacher"],
         course: json["course"],
         classroom: json["classroom"],
-        periods: Map.from(json["periods"]).map((k, v) =>
-            MapEntry<String, List<int>>(k, List<int>.from(v.map((x) => x)))),
+        periods: json["periods"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,7 +40,22 @@ class TeachingResponseModel {
         "teacher": teacher,
         "course": course,
         "classroom": classroom,
-        "periods": Map.from(periods).map((k, v) =>
-            MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
+        "periods": periods,
+      };
+}
+
+class Period {
+  Period({
+    required this.the0,
+  });
+
+  List<int> the0;
+
+  factory Period.fromJson(Map<String, dynamic> json) => Period(
+        the0: List<int>.from(json["0"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "0": List<dynamic>.from(the0.map((x) => x)),
       };
 }

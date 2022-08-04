@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:automated_course_plan_generator/bloc/teaching/teaching_cubit.dart';
 import 'package:automated_course_plan_generator/components/background.dart';
 import 'package:automated_course_plan_generator/constants.dart';
@@ -14,7 +16,6 @@ class SavedClass extends StatefulWidget {
 class _SavedClassState extends State<SavedClass> {
   List<String> className = ['Class 1', 'Class 2', 'Class3'];
 
-  late int clno;
   @override
   void initState() {
     super.initState();
@@ -57,12 +58,19 @@ class _SavedClassState extends State<SavedClass> {
                         child: Text('No Data available'),
                       );
                     }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: classList.length,
-                      itemBuilder: (context, index) =>
-                          classBox(index, classList[index].url),
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * .7,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: classList.length,
+                        itemBuilder: (context, index) =>
+                            classBox(index, classList[index].url),
+                      ),
                     );
+                  }
+                  if (state is TeachingError) {
+                    log(state.name.toString());
                   }
                   return Container();
                 },
@@ -92,7 +100,7 @@ class _SavedClassState extends State<SavedClass> {
                 ),
                 Expanded(
                   child: Text(
-                    clno.toString(),
+                    index.toString(),
                     style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 22,
